@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.leeco.smanager.services.LeecoPowerService;
+import com.leeco.smanager.services.LPowerService;
 
 public class StartBoot extends BroadcastReceiver {
     public  String TAG = "SManger: Boot Complete";
@@ -26,11 +26,6 @@ public class StartBoot extends BroadcastReceiver {
             wifiManager.setWifiEnabled(false);
         }
         Log.d(TAG,"Start service");
-        Intent serviceIntent = new Intent();
-        serviceIntent.setType(LeecoPowerService.ACTION_REGISTER_RECIEVER);
-        serviceIntent.putExtra(LeecoPowerService.EXTRA_PARAM1,""); //А вдруг будем когда нить что нить передавать
-        serviceIntent.putExtra(LeecoPowerService.EXTRA_PARAM2,"");
-        serviceIntent.setClass(context,LeecoPowerService.class);
-        context.startService(serviceIntent);
+        context.startService(new Intent(context, LPowerService.class));
     }
 }
