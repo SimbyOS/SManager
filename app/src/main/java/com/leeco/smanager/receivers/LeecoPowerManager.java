@@ -6,44 +6,33 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.util.Log;
 
-import lineageos.power.PerformanceManager;
+import com.leeco.smanager.BuildConfig;
+import com.topjohnwu.superuser.BusyBox;
+import com.topjohnwu.superuser.Shell;
+
+import java.util.Objects;
 
 
 public class LeecoPowerManager extends BroadcastReceiver {
     public LeecoPowerManager(){}
     String TAG = "SManager: LeecoPM";
+    private    Shell.Container container;
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG,"Profile chenged to PROFILE_POWER_SAVE");
         try{
-            PerformanceManager manager = PerformanceManager.getInstance(context);
-            if(manager.getPowerProfile() == PerformanceManager.PROFILE_POWER_SAVE){
-                Log.d(TAG,"Profile chenged to PROFILE_POWER_SAVE");
-            }
-
-            if(manager.getPowerProfile() == PerformanceManager.PROFILE_BALANCED){
-                Log.d(TAG,"Profile chenged to PROFILE_BALANCED");
-            }
-
-            if(manager.getPowerProfile() == PerformanceManager.PROFILE_BIAS_POWER_SAVE){
-                Log.d(TAG,"Profile chenged to PROFILE_BIAS_POWER_SAVE");
-            }
-            if(manager.getPowerProfile() == PerformanceManager.PROFILE_HIGH_PERFORMANCE){
-                Log.d(TAG,"Profile chenged to PROFILE_HIGH_PERFORMANCE");
-            }
-            if(manager.getPowerProfile() == PerformanceManager.PROFILE_BIAS_PERFORMANCE){
-                Log.d(TAG,"Profile chenged to PROFILE_BIAS_PERFORMANCE");
-            }
-        }catch (Exception d){
-            Log.d(TAG,d.getMessage());
-        }
-
-        try{
+            container = Shell.Config.newContainer();
+            Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
+            Shell.Config.verboseLogging(BuildConfig.DEBUG);
+            BusyBox.setup(context);
             final PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            if (pm.isPowerSaveMode()) {
+            if (Objects.requireNonNull(pm).isPowerSaveMode()) {
                 Log.d(TAG,"Native powersave mode on");
+                Log.d(TAG,"Execute: /etc/mode/powersave.sh");
+                Shell.su("sh /etc/mode/powersave.sh").submit();
             } else {
                 Log.d(TAG,"Native powersave mode off ");
+                Log.d(TAG,"Execute: /etc/mode/normal.sh");
+                Shell.su("sh /etc/mode/normal.sh").submit();
             }
         }catch (Exception d){
             Log.d(TAG,d.getLocalizedMessage());

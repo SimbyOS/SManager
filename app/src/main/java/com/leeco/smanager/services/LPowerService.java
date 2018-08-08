@@ -8,7 +8,6 @@ import android.os.PowerManager;
 
 import com.leeco.smanager.receivers.LeecoPowerManager;
 
-import lineageos.power.PerformanceManager;
 
 public class LPowerService extends Service {
     public LPowerService() {
@@ -25,7 +24,7 @@ public class LPowerService extends Service {
         super.onCreate();
         final IntentFilter theFilter = new IntentFilter();
         theFilter.addAction(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED);
-        theFilter.addAction(PerformanceManager.POWER_PROFILE_CHANGED);
+    //    theFilter.addAction(PerformanceManager.POWER_PROFILE_CHANGED);
         this.lreceiver = new LeecoPowerManager();
         this.registerReceiver(this.lreceiver, theFilter);
     }
