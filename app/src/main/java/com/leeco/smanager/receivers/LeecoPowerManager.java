@@ -10,7 +10,8 @@ import lineageos.power.PerformanceManager;
 
 
 public class LeecoPowerManager extends BroadcastReceiver {
-    String TAG = "LeecoPM";
+    public LeecoPowerManager(){}
+    String TAG = "SManager: LeecoPM";
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG,"Profile chenged to PROFILE_POWER_SAVE");

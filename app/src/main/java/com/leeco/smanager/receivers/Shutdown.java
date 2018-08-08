@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import com.leeco.smanager.services.LeecoPowerService;
+
 public class Shutdown extends BroadcastReceiver {
     public  String TAG = "SManger: ShutdownLog";
 
@@ -23,7 +25,12 @@ public class Shutdown extends BroadcastReceiver {
             ed.putString("WifiState","false");
 
         ed.commit();
-
+        Intent serviceIntent = new Intent();
+        serviceIntent.setType(LeecoPowerService.ACTION_UNREGISTER_RECIEVER);
+        serviceIntent.putExtra(LeecoPowerService.EXTRA_PARAM1,""); //А вдруг будем когда нить что нить передавать
+        serviceIntent.putExtra(LeecoPowerService.EXTRA_PARAM2,"");
+        serviceIntent.setClass(context,LeecoPowerService.class);
+        context.startService(serviceIntent);
     }
     private boolean checkWifiOnAndConnected(Context d) {
         WifiManager wifiMgr = (WifiManager) d.getSystemService(Context.WIFI_SERVICE);

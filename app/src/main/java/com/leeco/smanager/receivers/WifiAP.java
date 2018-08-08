@@ -20,19 +20,14 @@ public class WifiAP extends BroadcastReceiver {
         SystemClock.sleep(3000);
         String action = intent.getAction();
         Log.d("WifiAP",action);
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiApControl apControl = WifiApControl.getInstance(context);
         Log.d("WifiAP","Waiting thread");
-
         boolean enabled = apControl.isEnabled();
-
         if (!enabled){
             Log.d("WifiAP","AP disabled");
             container = Shell.Config.newContainer();
-            // You can configure Shell here
             Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
             Shell.Config.verboseLogging(BuildConfig.DEBUG);
-            // Use libsu's internal BusyBox
             BusyBox.setup(context);
             Log.d("WifiAP","remove driver/insmod");
             Shell.su("rmmod wlan; insmod /system/lib/modules/pronto/pronto_wlan.ko").submit();

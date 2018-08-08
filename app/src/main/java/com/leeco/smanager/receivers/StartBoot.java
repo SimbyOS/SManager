@@ -30,6 +30,7 @@ public class StartBoot extends BroadcastReceiver {
         serviceIntent.setType(LeecoPowerService.ACTION_REGISTER_RECIEVER);
         serviceIntent.putExtra(LeecoPowerService.EXTRA_PARAM1,""); //А вдруг будем когда нить что нить передавать
         serviceIntent.putExtra(LeecoPowerService.EXTRA_PARAM2,"");
-        context.startService(new Intent(context, LeecoPowerService.class));
+        serviceIntent.setClass(context,LeecoPowerService.class);
+        context.startService(serviceIntent);
     }
 }

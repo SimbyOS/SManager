@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.leeco.smanager.receivers.LeecoPowerManager;
+
 
 public class LeecoPowerService extends IntentService {
    public String TAG = "SManager:  LeecoPowerManagerService";
@@ -17,10 +19,12 @@ public class LeecoPowerService extends IntentService {
     public static final String EXTRA_PARAM2 = "com.leeco.smanager.extra.PARAM2";
     public LeecoPowerService() {
         super("LeecoPowerService");
+
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_REGISTER_RECIEVER.equals(action)) {
@@ -34,26 +38,16 @@ public class LeecoPowerService extends IntentService {
             }
         }
     }
-   private BroadcastReceiver powerSaverChangeReceiver;
+   private LeecoPowerManager powerSaverChangeReceiver;
     private void registerReciever(String param1, String param2) {
-         powerSaverChangeReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                final PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                if (pm.isPowerSaveMode()) {
-                    Log.d(TAG,"Android native powersave mode : on");
-                } else {
-                    Log.d(TAG,"Android native powersave mode : off");
-                }
-            }
-        };
+        this.powerSaverChangeReceiver = new LeecoPowerManager();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.os.action.POWER_SAVE_MODE_CHANGING");
         registerReceiver(powerSaverChangeReceiver, filter);
     }
 
     private void unregisterReciever(String param1, String param2) {
+        if(this.powerSaverChangeReceiver != null)
     unregisterReceiver(powerSaverChangeReceiver);
     }
 }
