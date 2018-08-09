@@ -16,11 +16,9 @@ import java.util.Objects;
 public class LeecoPowerManager extends BroadcastReceiver {
     public LeecoPowerManager(){}
     String TAG = "SManager: LeecoPM";
-    private    Shell.Container container;
     @Override
     public void onReceive(Context context, Intent intent) {
         try{
-            container = Shell.Config.newContainer();
             Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
             Shell.Config.verboseLogging(BuildConfig.DEBUG);
             BusyBox.setup(context);

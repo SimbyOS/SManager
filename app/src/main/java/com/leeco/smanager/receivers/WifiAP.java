@@ -14,7 +14,6 @@ import com.topjohnwu.superuser.Shell;
 import cc.mvdan.accesspoint.WifiApControl;
 
 public class WifiAP extends BroadcastReceiver {
-    private Shell.Container container;
     @Override
     public void onReceive(Context context, Intent intent) {
         SystemClock.sleep(3000);
@@ -25,7 +24,6 @@ public class WifiAP extends BroadcastReceiver {
         boolean enabled = apControl.isEnabled();
         if (!enabled){
             Log.d("WifiAP","AP disabled");
-            container = Shell.Config.newContainer();
             Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
             Shell.Config.verboseLogging(BuildConfig.DEBUG);
             BusyBox.setup(context);
