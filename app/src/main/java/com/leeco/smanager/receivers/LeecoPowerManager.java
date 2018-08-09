@@ -12,6 +12,8 @@ import com.topjohnwu.superuser.Shell;
 
 import java.util.Objects;
 
+import cyanogenmod.power.PerformanceManager;
+
 
 public class LeecoPowerManager extends BroadcastReceiver {
     public LeecoPowerManager(){}
@@ -35,6 +37,10 @@ public class LeecoPowerManager extends BroadcastReceiver {
         }catch (Exception d){
             Log.d(TAG,d.getLocalizedMessage());
         }
+        try{
+            PerformanceManager pm = PerformanceManager.getInstance(context);
+            Log.d(TAG, "CM PowerProfile : " + pm.getPowerProfile());
+        }catch (Exception d){}
 
     }
 }
